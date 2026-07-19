@@ -77,6 +77,7 @@ fun SettingsButton(
     var autoRouteLinksAfterInstall by remember { mutableStateOf(false) }
     var disableStockLinksAfterInstall by remember { mutableStateOf(false) }
     var developerOptions by remember { mutableStateOf(false) }
+    var autoDownloadUpdates by remember { mutableStateOf(false) }
 
     LaunchedEffect(showSettingsDialog) {
         if (showSettingsDialog) {
@@ -95,6 +96,7 @@ fun SettingsButton(
             autoRouteLinksAfterInstall = config.autoRouteLinksAfterInstall
             disableStockLinksAfterInstall = config.disableStockLinksAfterInstall
             developerOptions = config.developerOptions
+            autoDownloadUpdates = config.autoDownloadUpdates
             // Resolve the smart-default if the user has never picked a channel
             // (returns DEV when the running build is dev, STABLE otherwise).
             updateChannelPreference = configRepository.getOrInitUpdateChannelPreference(
@@ -211,6 +213,11 @@ fun SettingsButton(
             onDisableStockLinksChange = { enabled ->
                 disableStockLinksAfterInstall = enabled
                 scope.launch { configRepository.setDisableStockLinksAfterInstall(enabled) }
+            },
+            autoDownloadUpdates = autoDownloadUpdates,
+            onAutoDownloadUpdatesChange = { enabled ->
+                autoDownloadUpdates = enabled
+                scope.launch { configRepository.setAutoDownloadUpdates(enabled) }
             },
             collapsibleSectionStates = collapsibleSectionStates,
             onCollapsibleSectionToggle = { id, expanded ->
