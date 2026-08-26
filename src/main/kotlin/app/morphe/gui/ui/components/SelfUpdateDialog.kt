@@ -5,17 +5,14 @@
 
 package app.morphe.gui.ui.components
 
+import app.morphe.gui.ui.icons.MorpheIcons
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.ErrorOutline
-import androidx.compose.material.icons.filled.NewReleases
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -173,7 +170,7 @@ fun SelfUpdateDialog(
         containerColor = MaterialTheme.colorScheme.surface,
         title = {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Icon(Icons.Default.NewReleases, contentDescription = null, tint = accents.secondary, modifier = Modifier.size(18.dp))
+                Icon(MorpheIcons.Download, contentDescription = null, tint = accents.secondary, modifier = Modifier.size(18.dp))
                 Text(
                     text = "UPDATE MORPHE",
                     fontWeight = FontWeight.Bold,
@@ -191,7 +188,7 @@ fun SelfUpdateDialog(
         confirmButton = {
             when (val p = phase) {
                 is SelfUpdatePhase.Available -> TextButton(onClick = { startDownload(p.info) }) {
-                    Icon(Icons.Default.Download, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Icon(MorpheIcons.Download, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(6.dp))
                     Text("DOWNLOAD & INSTALL", fontFamily = mono, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
@@ -238,13 +235,13 @@ private fun DialogBody(
 ) {
     when (phase) {
         is SelfUpdatePhase.Checking -> LoadingRow("Checking for updates…", mono)
-        is SelfUpdatePhase.UpToDate -> LoadingRow("You're already on the latest version.", mono, icon = Icons.Default.CheckCircle)
+        is SelfUpdatePhase.UpToDate -> LoadingRow("You're already on the latest version.", mono, icon = MorpheIcons.Check)
         is SelfUpdatePhase.Available -> ReleaseSummary(phase.info, mono, accents)
         is SelfUpdatePhase.Downloading -> DownloadProgressView(phase.info, phase.progress, mono, accents)
         is SelfUpdatePhase.Verifying -> LoadingRow("Verifying download…", mono)
         is SelfUpdatePhase.Installing -> LoadingRow("Handing off to installer…", mono)
         is SelfUpdatePhase.Failed -> Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Icon(Icons.Default.ErrorOutline, contentDescription = null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(18.dp))
+            Icon(MorpheIcons.Warning, contentDescription = null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(18.dp))
             Column {
                 Text("Update failed", fontFamily = mono, fontWeight = FontWeight.Bold, fontSize = 12.sp)
                 Spacer(Modifier.height(4.dp))
